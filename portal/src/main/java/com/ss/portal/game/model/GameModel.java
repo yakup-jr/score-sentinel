@@ -19,8 +19,8 @@ public class GameModel {
     public static List<GameModel> toModel(List<GameEntity> gameEntities) {
         List<GameModel> gameModels = new ArrayList<>();
 
-        for (int i = 0; i < gameEntities.size(); i++) {
-            gameModels.add(GameModel.toModel(gameEntities.get(i)));
+        for (GameEntity gameEntity : gameEntities) {
+            gameModels.add(GameModel.toModel(gameEntity));
         }
 
         return gameModels;

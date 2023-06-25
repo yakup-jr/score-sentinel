@@ -16,37 +16,22 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
 
     List<GameEntity> findAll();
 
-    Optional<GameEntity> findByName(@Param("name") String name);
-
-    @Query("select GameEntity from GameEntity games where (:name is null " +
-        "or games.name = :name) and (:id is null or games.id = :id)")
+    @Query("select g from GameEntity g where (:name is null or g.name = :name) and (:id is null or g.id = :id)")
     Optional<GameEntity> findByParams(@Param("name") String name,
-                                        @Param(
-                                            "id") Long id);
+                                      @Param("id") Long id);
 
     @Transactional
-    @Modifying
-    @Query(
-        "update GameEntity games set games.name = :newName where games.name " +
-            "= " +
-            ":name or games.id = :id")
-    void updateAllByNameOrId(
-        @Param("newName") String newName,
-        @Param("name") String name,
-        @Param("id") Long id);
+    @Modifying(clearAutomatically = true)
+    @Query("update GameEntity g set g.name = :newName where (:id is null or g.id = :id)")
+    void updateAllById(
+            @Param("newName") String newName,
+            @Param("id") Long id);
 
-    @Transactional
     @Modifying
-    @Query(
-        "update GameEntity games set games.name = :newName where games.id = :id")
-    void updateNameById(@Param("newName") String name, @Param("id") Long id);
-
     @Transactional
-    @Modifying
-    @Query(
-        "update GameEntity games set games.name = :newName where games.name = :oldName")
-    void updateNameByName(@Param("newName") String newName,
-                          @Param("oldName") String oldName);
+    @Query("delete GameEntity games where (:name is null or games.name = :name) and " +
+        "(:id is null or games.id = :id)")
+    void deleteByParams(@Param("name") String name, @Param("id") Long id);
 
     void deleteById(@Param("id") Long id);
 

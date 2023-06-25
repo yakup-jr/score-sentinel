@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameService {
@@ -23,7 +24,7 @@ public class GameService {
 
     public GameModel addOne(GameEntity gameEntity)
         throws GameAlreadyExsitException {
-        if (gameRepository.findByName(gameEntity.getName()).isPresent()) {
+        if (gameRepository.findByParams(gameEntity.getName(), null).isPresent()) {
             throw new GameAlreadyExsitException(
                 "Game with name " + gameEntity.getName() + " already exist");
         }
@@ -45,14 +46,14 @@ public class GameService {
         return gameModels;
     }
 
-    public GameModel updateAllByNameOrId(GameEntity gameEntity, String name,
-                                         Long id)
+    public GameModel updateAllById(GameEntity gameEntity,
+                                   Long id)
         throws GameNotFoundException, IllegalArgumentException {
-        if (name == null && id == null) {
+        if (id == null) {
             throw new IllegalArgumentException("Missing required argument");
         }
-        gameRepository.updateAllByNameOrId(gameEntity.getName(), name, id);
-        return this.findByParams(name, id).get(0);
+        gameRepository.updateAllById(gameEntity.getName(), id);
+        return this.findByParams(null, id).get(0);
     }
 
     public void deleteById(Long id) throws GameNotFoundException {
@@ -63,7 +64,7 @@ public class GameService {
     }
 
     public void deleteByName(String name) throws GameNotFoundException {
-        if (gameRepository.findByName(name).isPresent()) {
+        if (gameRepository.findByParams(name, null).isPresent()) {
             gameRepository.deleteByName(name);
         }
         throw new GameNotFoundException(

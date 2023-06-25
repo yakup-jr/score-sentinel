@@ -43,13 +43,11 @@ public class GameController {
     }
 
     @PutMapping("games")
-    public ResponseEntity<?> updateAllByNameOrId(
+    public ResponseEntity<?> updateAllById(
         @RequestBody GameEntity gameEntity,
-        @RequestParam(value = "name", required = false) String name,
-        @RequestParam(value = "id", required = false) Long id) {
+        @RequestParam("id") Long id) {
         try {
-            GameModel gameModel = gameService.updateAllByNameOrId(gameEntity,
-                name, id);
+            GameModel gameModel = gameService.updateAllById(gameEntity, id);
             return ResponseEntity.status(200).body(gameModel);
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(exception);

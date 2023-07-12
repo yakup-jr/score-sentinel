@@ -1,16 +1,15 @@
 package com.ss.portal.game.service;
 
-import com.ss.portal.game.repository.GameRepository;
 import com.ss.portal.game.entity.GameEntity;
 import com.ss.portal.game.exception.GameAlreadyExsitException;
 import com.ss.portal.game.exception.GameNotFoundException;
 import com.ss.portal.game.model.GameModel;
+import com.ss.portal.game.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GameService {
@@ -24,31 +23,31 @@ public class GameService {
 
     public GameModel addOne(GameEntity gameEntity)
         throws GameAlreadyExsitException {
-        if (gameRepository.findByParams(gameEntity.getName(), null).isPresent()) {
+        if (gameRepository.findByParams(gameEntity.getName(), null)
+            .isPresent()) {
             throw new GameAlreadyExsitException(
                 "Game with name " + gameEntity.getName() + " already exist");
         }
         return GameModel.toModel(gameRepository.save(gameEntity));
     }
 
+    public List<GameModel> findAll() {
+        return GameModel.toModel(gameRepository.findAll());
+    }
+
     public List<GameModel> findByParams(String name, Long id)
         throws GameNotFoundException {
-        if (name == null && id == null) {
-            return GameModel.toModel(gameRepository.findAll());
-        }
-
         List<GameModel> gameModels = new ArrayList<>();
         gameModels.add(
             GameModel.toModel(gameRepository.findByParams(name, id).orElseThrow(
-                () -> new GameNotFoundException(
-                    "Game with name " + name + " and id " + id + " not found"))));
+                () -> new GameNotFoundException(name, id))));
 
         return gameModels;
     }
 
     public GameModel updateAllById(GameEntity gameEntity,
                                    Long id)
-        throws GameNotFoundException, IllegalArgumentException {
+        throws IllegalArgumentException {
         if (id == null) {
             throw new IllegalArgumentException("Missing required argument");
         }

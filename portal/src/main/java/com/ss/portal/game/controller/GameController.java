@@ -31,6 +31,12 @@ public class GameController {
     }
 
     @GetMapping("/games")
+    public ResponseEntity<?> findAll() {
+        List<GameModel> games = gameService.findAll();
+        return ResponseEntity.ok().body(games);
+    }
+
+    @GetMapping("/games/filter")
     public ResponseEntity<?> findByParams(
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "id", required = false) Long id) {

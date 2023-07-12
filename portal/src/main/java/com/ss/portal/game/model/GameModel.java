@@ -1,10 +1,14 @@
 package com.ss.portal.game.model;
 
 import com.ss.portal.game.entity.GameEntity;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class GameModel {
     private Long id;
     private String name;

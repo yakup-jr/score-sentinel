@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Slf4j
 public class GameEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

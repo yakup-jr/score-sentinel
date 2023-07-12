@@ -13,24 +13,25 @@ import java.util.Optional;
 
 @Repository
 public interface GameRepository extends JpaRepository<GameEntity, Long> {
-
-    List<GameEntity> findAll();
-
-    @Query("select g from GameEntity g where (:name is null or g.name = :name) and (:id is null or g.id = :id)")
+    @Query(
+        "select g from GameEntity g where (:name is null or g.name = :name) and (:id " +
+            "is null or g.id = :id) and (:name is not null or :id is not null)")
     Optional<GameEntity> findByParams(@Param("name") String name,
                                       @Param("id") Long id);
 
     @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query("update GameEntity g set g.name = :newName where (:id is null or g.id = :id)")
+    @Modifying
+    @Query(
+        "update GameEntity g set g.name = :newName where (:id is null or g.id = :id)")
     void updateAllById(
-            @Param("newName") String newName,
-            @Param("id") Long id);
+        @Param("newName") String newName,
+        @Param("id") Long id);
 
     @Modifying
     @Transactional
-    @Query("delete GameEntity games where (:name is null or games.name = :name) and " +
-        "(:id is null or games.id = :id)")
+    @Query(
+        "delete GameEntity games where (:name is null or games.name = :name) and " +
+            "(:id is null or games.id = :id) and (:name is not null or :id is not null)")
     void deleteByParams(@Param("name") String name, @Param("id") Long id);
 
     void deleteById(@Param("id") Long id);

@@ -1,0 +1,30 @@
+CREATE SCHEMA IF NOT EXISTS roles_schema;
+CREATE TYPE roles_schema.roles_enum AS ENUM ('Admin', 'User');
+
+CREATE TABLE IF NOT EXISTS roles_schema.roles
+(
+    ID   BIGSERIAL PRIMARY KEY,
+    NAME roles_schema.roles_enum NOT NULL UNIQUE
+);
+
+CREATE SCHEMA IF NOT EXISTS users_schema;
+
+CREATE TABLE IF NOT EXISTS users_schema.users
+(
+    ID          BIGSERIAL PRIMARY KEY,
+    USERNAME    VARCHAR(64) UNIQUE  NOT NULL,
+    EMAIL       VARCHAR(255) UNIQUE NOT NULL,
+    PASSWORD    VARCHAR(255)        NOT NULL,
+    CREATED_AT  TIMESTAMP           NOT NULL,
+    LAST_ONLINE TIMESTAMP           NOT NULL,
+    IS_ACTIVE   BOOLEAN             NOT NULL
+);
+
+CREATE SCHEMA IF NOT EXISTS user_roles_schema;
+
+CREATE TABLE IF NOT EXISTS user_roles_schema.user_roles
+(
+    USER_ID BIGINT REFERENCES users (ID),
+    ROLE_ID BIGINT REFERENCES roles (ID),
+    PRIMARY KEY (USER_ID, ROLE_ID)
+);

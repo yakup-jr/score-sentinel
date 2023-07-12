@@ -1,107 +1,114 @@
 package com.ss.portal.game.repository;
 
-
 import com.ss.portal.game.entity.GameEntity;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-@DataJpaTest(showSql = false)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
+
+@DataJpaTest
+@Sql("/data/test-games.sql")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class GameRepositoryTest {
 
     @Autowired
     private GameRepository gameRepository;
 
+    @Autowired
+    private TestEntityManager testEntityManager;
+
     @AfterEach
     void tearDown() {
         gameRepository.deleteAll();
+        testEntityManager.clear();
     }
 
-    GameEntity gameEntity_1 = new GameEntity(1l, "fifa");
-    GameEntity gameEntity_2 = new GameEntity(2l, "mc 11");
-
-    void saveToRepository() {
-        gameRepository.save(gameEntity_1);
-        gameRepository.save(gameEntity_2);
-    }
-
-    @DisplayName("should return game when games exist")
-    @CsvSource({"true,2", "false,0"})
-    @ParameterizedTest
-    void shouldReturnAllGamesWhenExist(boolean exist, int size) {
-        if (exist) saveToRepository();
-
+    @Test
+    void should_return_all_games_when_exist() {
         List<GameEntity> excepted = gameRepository.findAll();
 
-        assertThat(excepted.size()).isEqualTo(size);
+        assertThat(excepted.size()).isEqualTo(2);
     }
 
-    @DisplayName("should return game when name exist")
-    @CsvSource({"fifa,true", "some name,false", "null,false"})
     @ParameterizedTest
-    void shouldReturnGameWhenNameExist(String name, boolean expected) {
-        saveToRepository();
+    @MethodSource("gameParams")
+    void should_return_game_by_params_when_exists(String name, Long id,
+                                                  Long expectedId) {
+        // when
+        Optional<GameEntity> found = gameRepository.findByParams(name, id);
+        if (expectedId == null)
+            assertThat(found).isEmpty();
+        else
+            assertThat(found.map(GameEntity::getId)).hasValue(expectedId);
 
-        Optional<GameEntity> actual =
-            gameRepository.findByParams(name, null);
-
-        assertThat(actual.isPresent()).isEqualTo(expected);
     }
 
-    @DisplayName("should return game when id exist")
-    @CsvSource({"1,true", "3,false"})
-    @ParameterizedTest
-    void shouldReturnGameWhenIdExist(Long id, boolean expected) {
-        saveToRepository();
-
-        Optional<GameEntity> actual =
-            gameRepository.findByParams(null, id);
-
-        assertThat(actual.isPresent()).isEqualTo(expected);
+    static Stream<Arguments> gameParams() {
+        return Stream.of(
+            Arguments.of("mc 11", null, 2L),
+            Arguments.of("fifa", null, 1L),
+            Arguments.of(null, 2L, 2L),
+            Arguments.of(null, null, null)
+        );
     }
 
-
-    @DisplayName("should return game when id exist")
-    @CsvSource(value = {"fifa 23,1,true", "new name,3,false"},
-        nullValues = {
-        "null"})
     @ParameterizedTest
-    void shouldUpdateNameIfIdExist(String newName, Long id, boolean excepted) {
-        saveToRepository();
+    @MethodSource("gameUpdateParams")
+    void should_update_game_name_by_id_when_exists(Long id, String newName) {
+        // when
+        assertThatCode(() -> gameRepository.updateAllById(newName,
+            id)).doesNotThrowAnyException();
+        testEntityManager.clear();
 
-        gameRepository.updateAllById(newName, id);
-        Optional<GameEntity> actual = gameRepository.findByParams(newName, null);
-
-        assertThat(actual.isPresent()).isEqualTo(excepted);
-        if (actual.isPresent())
-            assertThat(actual.get().getName()).isEqualTo(newName);
+        // then
+        Optional<GameEntity> updated = gameRepository.findById(id);
+        if (newName == null)
+            assertThat(updated).isEmpty();
+        else
+            assertThat(updated.map(GameEntity::getName)).hasValue(newName);
     }
 
-    @DisplayName("should delete game when id or name exist")
-    @CsvSource(value = {"fifa,null,false", "null,1,false", "fifa,1,false", "null,null," +
-        "false", "fifa,2,false"},
-        nullValues = {"null"})
+    static Stream<Arguments> gameUpdateParams() {
+        return Stream.of(
+            Arguments.of(1L, "Mario"),
+            Arguments.of(2L, "mc 11"),
+            Arguments.of(3L, null)
+        );
+    }
+
     @ParameterizedTest
-    void should(String name, Long id, boolean excepted) {
-        saveToRepository();
+    @MethodSource("gameDeleteParams")
+    void should_delete_game_by_params_when_exists(String name, Long id,
+                                                  int expectedSize) {
+        // when
+        assertThatCode(() -> gameRepository.deleteByParams(name,
+            id)).doesNotThrowAnyException();
 
-        gameRepository.deleteByParams(name, id);
-        Optional<GameEntity> actual = gameRepository.findByParams(name,
-            id);
+        // then
+        List<GameEntity> games = gameRepository.findAll();
+        assertThat(games.size()).isEqualTo(expectedSize);
+    }
 
-        assertThat(actual.isPresent()).isEqualTo(excepted);
+    static Stream<Arguments> gameDeleteParams() {
+        return Stream.of(
+            Arguments.of("fifa", null, 1),
+            Arguments.of(null, 2L, 1),
+            Arguments.of("mc 11", 1L, 2),
+            Arguments.of(null, null, 2)
+        );
     }
 }

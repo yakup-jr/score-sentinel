@@ -1,1 +1,4 @@
-ALTER TABLE games ALTER COLUMN name TYPE VARCHAR(255), ALTER COLUMN name SET NOT NULL;
+--liquibase formatted sql
+
+--changeset yakup_jr:changelog_version-1.1.h2.sql
+ALTER TABLE games_schema.games ALTER COLUMN name SET NOT NULL;

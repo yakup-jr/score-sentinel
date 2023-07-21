@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changelog_version-1.0.h2.sql
+  - include:
+      file: db/changelog/changelog_version-1.01.h2.sql
+  - include:
+      file: db/changelog/changelog_version-1.1.h2.sql
+  - include:
+      file: db/changelog/changelog_version-1.2.h2.sql

@@ -21,7 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 @DataJpaTest
-@Sql("/data/test-games.sql")
+@Sql("/data/add-games.sql")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class GameRepositoryTest {
 

@@ -1,5 +1,6 @@
 package com.ss.portal.roles.service;
 
+import com.ss.portal.roles.entity.RoleEntity;
 import com.ss.portal.roles.enums.RoleEnum;
 import com.ss.portal.roles.exception.RoleNotFoundException;
 import com.ss.portal.roles.model.RoleModel;
@@ -19,6 +20,12 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
+    public RoleModel save(RoleEntity role) {
+        if (roleRepository.findByName(role.getName()).isEmpty())
+            return RoleModel.toModel(roleRepository.save(role));
+        throw new RoleNotFoundException(role.getName());
+    }
+
     public RoleModel findById(Long id) throws RoleNotFoundException {
         return RoleModel.toModel(
             roleRepository.findById(id)
@@ -36,12 +43,12 @@ public class RoleService {
     }
 
     public void deleteById(Long id) throws RoleNotFoundException {
-        if (this.findById(id) != null) new RoleNotFoundException(id);
+        if (this.findById(id) != null) throw new RoleNotFoundException(id);
         roleRepository.deleteById(id);
     }
 
     public void deleteByName(RoleEnum name) throws RoleNotFoundException {
-        if (this.findByName(name) != null) new RoleNotFoundException(name);
+        if (this.findByName(name) == null) throw new RoleNotFoundException(name);
         roleRepository.deleteByName(name);
     }
 }

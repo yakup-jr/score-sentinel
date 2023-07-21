@@ -2,7 +2,6 @@ package com.ss.portal.roles.repository;
 
 import com.ss.portal.roles.entity.RoleEntity;
 import com.ss.portal.roles.enums.RoleEnum;
-import com.ss.portal.roles.repository.RoleRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -20,7 +19,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Sql("/data/test-roles.sql")
+@Sql("/data/add-roles.sql")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class RoleRepositoryTest {
 

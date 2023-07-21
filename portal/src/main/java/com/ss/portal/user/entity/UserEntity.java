@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(schema = "users_schema", name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
     @ManyToMany
-    @JoinTable(schema = "user_roles",
+    @JoinTable(schema = "users_roles_schema", name = "user_roles",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<RoleEntity> roles;
@@ -35,7 +35,9 @@ public class UserEntity {
     @Column(nullable = false)
     private LocalDateTime lastOnline;
     @ManyToMany
-    @JoinTable(schema = "games")
+    @JoinTable(schema = "users_games_schema", name = "users_games",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "game_id"))
     private List<GameEntity> games;
     private boolean isActive;
 

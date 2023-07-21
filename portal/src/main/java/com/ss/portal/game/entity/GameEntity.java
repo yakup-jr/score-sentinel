@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Entity
-@Table(name = "games")
+@Table(schema = "games_schema", name = "games")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

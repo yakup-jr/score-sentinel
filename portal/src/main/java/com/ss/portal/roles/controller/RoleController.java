@@ -1,6 +1,7 @@
 package com.ss.portal.roles.controller;
 
 import com.ss.portal.hateoas.RoleLinkGenerator;
+import com.ss.portal.roles.entity.RoleEntity;
 import com.ss.portal.roles.enums.RoleEnum;
 import com.ss.portal.roles.model.RoleModel;
 import com.ss.portal.roles.service.RoleService;
@@ -28,6 +29,15 @@ public class RoleController {
     RoleController(RoleService roleService, RoleLinkGenerator roleLinkGenerator) {
         this.roleService = roleService;
         this.roleLinkGenerator = roleLinkGenerator;
+    }
+
+    @PostMapping("/one")
+    public EntityModel<RoleModel> save(@RequestBody RoleEntity role) {
+        RoleModel newRole = roleService.save(role);
+        WebMvcLinkBuilder selfLink = linkTo(
+            WebMvcLinkBuilder.methodOn(RoleController.class).save(role));
+        return EntityModel.of(newRole, selfLink.withSelfRel(),
+            roleLinkGenerator.linkToRoles().withRel("roles"));
     }
 
     @GetMapping("/id/{id}")

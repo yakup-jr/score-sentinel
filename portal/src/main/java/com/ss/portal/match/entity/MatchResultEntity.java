@@ -19,10 +19,14 @@ public class MatchResultEntity {
     private float point;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "team")
+    @JoinTable(schema = "matches_schema", name = "match_results_teams", joinColumns =
+    @JoinColumn(name = "match_result_id"), inverseJoinColumns = @JoinColumn(name =
+        "team_id"))
     private TeamEntity team;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "match")
+    @JoinTable(schema = "matches_schema", name = "match_results_matches", joinColumns =
+    @JoinColumn(name = "match_result_id"), inverseJoinColumns = @JoinColumn(name =
+        "match_id"))
     private MatchEntity match;
 }

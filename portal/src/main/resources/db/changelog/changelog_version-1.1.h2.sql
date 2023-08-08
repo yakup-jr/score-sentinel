@@ -31,8 +31,8 @@ CREATE SCHEMA IF NOT EXISTS users_roles_schema;
 
 CREATE TABLE IF NOT EXISTS users_roles_schema.user_roles
 (
-    USER_ID BIGINT REFERENCES users_schema.users (ID),
-    ROLE_ID BIGINT REFERENCES roles_schema.roles (ID),
+    USER_ID BIGSERIAL REFERENCES users_schema.users (ID),
+    ROLE_ID BIGSERIAL REFERENCES roles_schema.roles (ID),
     PRIMARY KEY (USER_ID, ROLE_ID)
 );
 
@@ -40,7 +40,7 @@ CREATE SCHEMA IF NOT EXISTS users_games_schema;
 
 CREATE TABLE IF NOT EXISTS users_games_schema.users_games
 (
-    USER_ID BIGINT REFERENCES users_schema.users (ID),
-    GAME_ID BIGINT REFERENCES games_schema.games (ID),
+    USER_ID BIGSERIAL REFERENCES users_schema.users (ID),
+    GAME_ID BIGSERIAL REFERENCES games_schema.games (ID),
     PRIMARY KEY (USER_ID, GAME_ID)
 );

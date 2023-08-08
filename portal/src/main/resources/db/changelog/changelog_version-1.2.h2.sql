@@ -13,15 +13,15 @@ CREATE SCHEMA IF NOT EXISTS teams_users_schema;
 
 CREATE TABLE IF NOT EXISTS teams_users_schema.teams_users
 (
-    USER_ID BIGINT REFERENCES users_schema.users (ID),
-    TEAM_ID BIGINT REFERENCES teams_schema.teams (ID),
+    USER_ID BIGSERIAL REFERENCES users_schema.users (ID),
+    TEAM_ID BIGSERIAL REFERENCES teams_schema.teams (ID),
     PRIMARY KEY (USER_ID, TEAM_ID)
 );
 
 CREATE SCHEMA IF NOT EXISTS teams_games_schema;
 
 CREATE TABLE IF NOT EXISTS teams_games_schema.teams_games (
-    GAME_ID BIGINT REFERENCES games_schema.games (ID),
-    TEAM_ID BIGINT REFERENCES teams_schema.teams (ID),
+    GAME_ID BIGSERIAL REFERENCES games_schema.games (ID),
+    TEAM_ID BIGSERIAL REFERENCES teams_schema.teams (ID),
     PRIMARY KEY (GAME_ID, TEAM_ID)
 )

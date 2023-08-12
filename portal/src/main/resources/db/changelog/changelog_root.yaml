@@ -10,4 +10,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/changelog_version-1.3.h2.sql
   - include:
-    - file: db/changelog/changelog_version-1.4.h2.sql
+      file: db/changelog/changelog_version-1.4.h2.sql
+  - include:
+      file: db/changelog/changelog_version-1.5.h2.sql
+  - include:
+      file: db/changelog/changelog_version-1.6.h2.sql

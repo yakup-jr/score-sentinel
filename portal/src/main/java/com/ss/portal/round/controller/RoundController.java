@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/round-management/rounds")
 public class RoundController {
 
-    private RoundService roundService;
-    private RoundLinkGeneration roundLinkGeneration;
+    private final RoundService roundService;
+    private final RoundLinkGeneration roundLinkGeneration;
 
     @Autowired
     public RoundController(RoundService roundService,
@@ -31,7 +31,7 @@ public class RoundController {
         var newRound = roundService.save(round);
 
         return ResponseEntity.ok(EntityModel.of(newRound,
-            roundLinkGeneration.linkToRoundById(newRound.getId()).withRel("roundById")));
+            RoundLinkGeneration.linkToRoundById(newRound.getId()).withRel("roundById")));
     }
 
     @GetMapping("/id/{id}")
@@ -39,7 +39,7 @@ public class RoundController {
         var round = roundService.findById(id);
 
         return ResponseEntity.ok(EntityModel.of(round,
-            roundLinkGeneration.linkToRounds().withRel("allRounds")));
+            RoundLinkGeneration.linkToRounds().withRel("allRounds")));
     }
 
     @GetMapping("/filter")
@@ -53,9 +53,9 @@ public class RoundController {
 
         var roundCollection =
             CollectionModel.of(roundModels.stream().map(round -> EntityModel.of(round,
-                    roundLinkGeneration.linkToRoundById(round.getId()).withRel("roundById")))
+                    RoundLinkGeneration.linkToRoundById(round.getId()).withRel("roundById")))
                 .collect(
-                    Collectors.toList()), roundLinkGeneration.linkToRounds().withRel(
+                    Collectors.toList()), RoundLinkGeneration.linkToRounds().withRel(
                 "allRounds"));
 
         return ResponseEntity.ok(roundCollection);
@@ -66,7 +66,7 @@ public class RoundController {
                                         @RequestBody RoundEntity round) {
         roundService.updateById(id, round);
 
-        return ResponseEntity.ok(roundLinkGeneration.linkToRoundById(id).withRel(
+        return ResponseEntity.ok(RoundLinkGeneration.linkToRoundById(id).withRel(
             "roundById"));
     }
 
@@ -74,6 +74,6 @@ public class RoundController {
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         roundService.deleteById(id);
 
-        return ResponseEntity.ok(roundLinkGeneration.linkToRounds().withRel("allRounds"));
+        return ResponseEntity.ok(RoundLinkGeneration.linkToRounds().withRel("allRounds"));
     }
 }

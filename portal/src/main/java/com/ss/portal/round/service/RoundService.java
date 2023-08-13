@@ -18,7 +18,7 @@ import static com.ss.portal.shared.repository.SharedRepository.Specs.*;
 @Service
 public class RoundService {
 
-    private RoundRepository roundRepository;
+    private final RoundRepository roundRepository;
 
     @Autowired
     public RoundService(RoundRepository roundRepository) {

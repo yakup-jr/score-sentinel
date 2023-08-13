@@ -17,13 +17,10 @@ import java.util.stream.Collectors;
 public class RoundResultController {
 
     private final RoundResultService roundResultService;
-    private final RoundResultLinkGenerator roundResultLinkGenerator;
 
     @Autowired
-    public RoundResultController(RoundResultService roundResultService,
-                                 RoundResultLinkGenerator roundResultLinkGenerator) {
+    public RoundResultController(RoundResultService roundResultService) {
         this.roundResultService = roundResultService;
-        this.roundResultLinkGenerator = roundResultLinkGenerator;
     }
 
     @PostMapping("/one")

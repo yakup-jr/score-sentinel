@@ -32,7 +32,7 @@ public class RoundResultController {
         var newRoundResult = roundResultService.save(roundResultEntity);
 
         return ResponseEntity.ok(EntityModel.of(newRoundResult,
-            roundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults")));
+            RoundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults")));
     }
 
     //todo: what return linkTo...ByFilter
@@ -41,7 +41,7 @@ public class RoundResultController {
         var roundResult = roundResultService.findById(id);
 
         return ResponseEntity.ok(EntityModel.of(roundResult,
-            roundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults")));
+            RoundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults")));
     }
 
     @GetMapping("/filter")
@@ -52,9 +52,9 @@ public class RoundResultController {
 
         var roundResultsCollection =
             CollectionModel.of(roundResults.stream().map(round -> EntityModel.of(round,
-                    roundResultLinkGenerator.linkToRoundResults()
+                    RoundResultLinkGenerator.linkToRoundResults()
                         .withRel("allRoundResults"))).collect(Collectors.toList()),
-                roundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults"));
+                RoundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults"));
 
         return ResponseEntity.ok(roundResultsCollection);
     }
@@ -64,7 +64,7 @@ public class RoundResultController {
                                         @RequestBody RoundResultEntity updateEntity) {
         roundResultService.updateById(id, updateEntity);
 
-        return ResponseEntity.ok(roundResultLinkGenerator.linkToRoundResultById(id));
+        return ResponseEntity.ok(RoundResultLinkGenerator.linkToRoundResultById(id));
     }
 
     @DeleteMapping("/id/{id}")
@@ -72,7 +72,7 @@ public class RoundResultController {
         roundResultService.deleteById(id);
 
         return ResponseEntity.ok(
-            roundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults"));
+            RoundResultLinkGenerator.linkToRoundResults().withRel("allRoundResults"));
     }
 
 }

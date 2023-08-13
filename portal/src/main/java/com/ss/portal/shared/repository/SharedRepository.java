@@ -1,13 +1,11 @@
 package com.ss.portal.shared.repository;
 
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SharedRepository<T, ID> extends JpaRepository<T, ID>,
-    JpaSpecificationExecutor<T> {
+public interface SharedRepository<T> extends JpaSpecificationExecutor<T> {
 
     interface Specs {
         static <K> Specification<K> byTeamId(Long teamId) {

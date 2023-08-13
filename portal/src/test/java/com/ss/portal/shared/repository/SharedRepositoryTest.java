@@ -25,8 +25,8 @@ class SpecsTest {
         assertNotNull(specification);
 
         CriteriaBuilder criteriaBuilder = mock(CriteriaBuilder.class);
-        CriteriaQuery<Object> criteriaQuery = mock(CriteriaQuery.class);
-        Root<Object> root = mock(Root.class);
+        CriteriaQuery criteriaQuery = mock(CriteriaQuery.class);
+        Root root = mock(Root.class);
 
         Predicate predicate =
             specification.toPredicate(root, criteriaQuery, criteriaBuilder);
@@ -39,9 +39,8 @@ class SpecsTest {
     @Test
     @DisplayName("Should throw an exception when the teamId is null")
     void byTeamIdWhenTeamIdIsNullThenThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            SharedRepository.Specs.byTeamId(null);
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> SharedRepository.Specs.byTeamId(null));
     }
 
     @Test

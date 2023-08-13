@@ -193,9 +193,8 @@ class RoundServiceTest {
 
         // Act and Assert
         RoundNotFoundException exception =
-            assertThrows(RoundNotFoundException.class, () -> {
-                roundService.findById(roundId);
-            });
+            assertThrows(RoundNotFoundException.class,
+                () -> roundService.findById(roundId));
 
         assertEquals("Round with id " + roundId + " not found", exception.getMessage());
 

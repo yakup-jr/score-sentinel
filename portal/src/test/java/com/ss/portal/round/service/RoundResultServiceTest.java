@@ -244,9 +244,8 @@ class RoundResultServiceTest {
         when(roundResultRepository.findById(id)).thenReturn(Optional.empty());
 
         // Act and Assert
-        assertThrows(MatchNotFoundException.class, () -> {
-            roundResultService.updateById(id, roundResultEntity);
-        });
+        assertThrows(MatchNotFoundException.class,
+            () -> roundResultService.updateById(id, roundResultEntity));
 
         verify(roundResultRepository, times(1)).findById(id);
         verify(roundResultRepository, never()).save(any(RoundResultEntity.class));
@@ -258,9 +257,8 @@ class RoundResultServiceTest {
         Long id = 1L;
         when(roundResultRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(RoundResultNotFoundException.class, () -> {
-            roundResultService.findById(id);
-        });
+        assertThrows(RoundResultNotFoundException.class,
+            () -> roundResultService.findById(id));
 
         verify(roundResultRepository, times(1)).findById(id);
     }

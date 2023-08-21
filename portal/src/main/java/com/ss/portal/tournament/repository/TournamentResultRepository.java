@@ -15,7 +15,7 @@ public interface TournamentResultRepository
     JpaSpecificationExecutor<TournamentResultEntity> {
 
     interface Specs {
-        public static Specification<TournamentResultEntity> byTournamentId(
+        static Specification<TournamentResultEntity> byTournamentId(
             Long tournamentId) {
             return (root, query, builder) -> {
                 var joinTournament = root.join("tournaments");

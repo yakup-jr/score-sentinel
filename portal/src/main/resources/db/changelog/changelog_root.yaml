@@ -15,3 +15,7 @@ databaseChangeLog:
       file: db/changelog/changelog_version-1.5.h2.sql
   - include:
       file: db/changelog/changelog_version-1.6.h2.sql
+  - include:
+      file: db/changelog/changelog_version-1.7.h2.sql
+  - include:
+      file: db/changelog/changelog_version-1.8.h2.sql

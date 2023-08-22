@@ -1,7 +1,7 @@
 package com.ss.portal.tournament.service;
 
 import com.ss.portal.tournament.entity.TournamentEntity;
-import com.ss.portal.tournament.exception.TournamentNofFoundException;
+import com.ss.portal.tournament.exception.TournamentNotFoundException;
 import com.ss.portal.tournament.model.TournamentModel;
 import com.ss.portal.tournament.repository.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static com.ss.portal.shared.repository.SharedRepository.Specs.byGameId;
 import static com.ss.portal.shared.repository.SharedRepository.Specs.byTeamId;
 import static com.ss.portal.tournament.model.TournamentModel.toModel;
 import static com.ss.portal.tournament.repository.TournamentRepository.Specs.byRoundId;
-import static com.ss.portal.tournament.repository.TournamentRepository.Specs.byTournamentResult;
+import static com.ss.portal.tournament.repository.TournamentRepository.Specs.byTournamentResultId;
 
 @Service
 public class TournamentService {
@@ -35,7 +35,7 @@ public class TournamentService {
     public TournamentModel findById(Long id) {
         var tournament = tournamentRepository.findById(id);
 
-        return toModel(tournament.orElseThrow(() -> new TournamentNofFoundException(id)));
+        return toModel(tournament.orElseThrow(() -> new TournamentNotFoundException(id)));
     }
 
     public List<TournamentModel> findByFilter(Long teamId, Long roundId, Long gameId,
@@ -54,7 +54,8 @@ public class TournamentService {
         if (teamId != null) spec.and(byTeamId(teamId));
         if (roundId != null) spec.and(byRoundId(roundId));
         if (gameId != null) spec.and(byGameId(gameId));
-        if (tournamentResultId != null) spec.and(byTournamentResult(tournamentResultId));
+        if (tournamentResultId != null)
+            spec.and(byTournamentResultId(tournamentResultId));
 
         return spec;
     }
@@ -74,7 +75,7 @@ public class TournamentService {
 
             tournamentRepository.save(existingEntity);
         } else {
-            new TournamentNofFoundException(id);
+            new TournamentNotFoundException(id);
         }
     }
 

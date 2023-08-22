@@ -22,7 +22,7 @@ public interface TournamentRepository extends JpaRepository<TournamentEntity, Lo
             };
         }
 
-        static Specification<TournamentEntity> byTournamentResult(
+        static Specification<TournamentEntity> byTournamentResultId(
             Long tournamentResultId) {
             return (root, query, builder) -> {
                 var joinTournamentResult = root.join("tournamentResults");

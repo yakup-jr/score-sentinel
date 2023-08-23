@@ -17,7 +17,7 @@ env:
   IMAGE_NAME: score-sentinel
 jobs:
   # This pushes the image to GitHub Packages.
-  push docker image:
+  push_docker_image:
     runs-on: ubuntu-latest
     permissions:
       packages: write

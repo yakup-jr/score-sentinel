@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - dev
+      - SS-15-application-add-ci-cd
     tags:
       - v*
     paths:

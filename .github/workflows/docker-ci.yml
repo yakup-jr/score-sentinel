@@ -7,11 +7,16 @@ on:
       - dev
     tags:
       - v*
+    paths:
+      - '.github/workflows/**'
   pull_request:
     branches:
       - master
       - dev
       - hot-fix
+  schedule:
+    # re-run monthly to keep image fresh with upstream base images
+    - cron: '0 12 15 * *'
 env:
   IMAGE_NAME: score-sentinel
 jobs:

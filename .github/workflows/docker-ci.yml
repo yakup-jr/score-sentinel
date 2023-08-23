@@ -9,7 +9,7 @@ on:
     tags:
       - v*
   pull_request:
-    - branches:
+    branches:
       - master
       - dev
       - hot-fix

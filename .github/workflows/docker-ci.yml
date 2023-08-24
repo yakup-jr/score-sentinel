@@ -37,7 +37,7 @@ jobs:
           java-version: 17
           distribution: 'adopt'
       - name: Build with Gradle
-        run: ./portal/gradlew jar
+        run: ./portal/gradle build
       - name: Build image
         run: docker build ./portal --file ./portal/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
       - name: Log in to registry
@@ -70,7 +70,7 @@ jobs:
           java-version: 17
           distribution: 'adopt'
       - name: Build with Gradle
-        run: ./portal/gradlew jar
+        run: ./portal/gradle build
 
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image

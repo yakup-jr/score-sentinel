@@ -42,7 +42,7 @@ jobs:
           image: whtoy/score-sentinel
           tags: latest
           registry: docker.io
-          dockerfile: Dockerfile
+          dockerfile: ./portal/Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
   # This pushes the image to GitHub Packages.

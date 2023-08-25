@@ -6,16 +6,6 @@ on:
       - master
       - dev
       - SS-15-application-add-ci-cd
-    tags:
-      - v*
-  pull_request:
-    branches:
-      - master
-      - dev
-      - hot-fix
-  schedule:
-    # re-run monthly to keep image fresh with upstream base images
-    - cron: '0 12 15 * *'
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: score-sentinel
@@ -36,20 +26,13 @@ jobs:
           distribution: 'adopt'
       - name: Build with Gradle
         run: ./portal/gradlew build
-      - name: Build image
-        run: docker build ./portal --file ./portal/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
-      - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.TOKEN }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images:
-            $IMAGE_NAME
-      - name: Push docker image
-        run: docker push ghcr.io/${{ github.repository }}
+          image: whtoy/score-sentinel
+          tags: latest
+          registry: docker.io
+          dockerfile: ./portal/Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 

@@ -52,5 +52,5 @@ jobs:
             my-docker-hub-namespace/my-docker-hub-repository
             ghcr.io/${{ github.repository }}
       - name: Push docker image
-        run: docker push ghcr.io/${{ github.actor }}/${{ github.repository }}
+        run: docker push ghcr.io/${{ github.repository }}
 

@@ -8,8 +8,6 @@ on:
       - SS-15-application-add-ci-cd
     tags:
       - v*
-    paths:
-      - '.github/workflows/**'
   pull_request:
     branches:
       - master

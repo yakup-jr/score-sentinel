@@ -27,9 +27,9 @@ jobs:
       - name: Build with Gradle
         run: ./portal/gradlew build
       - name: Build & push Docker image
-        uses: mr-smithers-excellent/docker-build-push@v5
+        uses: mr-smithers-excellent/docker-build-push@v6
         with:
-          image: whtoy/score-sentinel
+          image: portal
           tags: latest
           registry: docker.io
           dockerfile: ./portal/Dockerfile

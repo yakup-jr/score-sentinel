@@ -15,7 +15,8 @@ on:
     tags:
       - v*
 env:
-  REGISTRY: ghcr.io
+  DOCKER_HUB: docker.io
+  GITHUB_PACKAGES: ghcr.io
 jobs:
   build-and-run-tests:
 
@@ -59,7 +60,7 @@ jobs:
         with:
           image: whtoy/score-sentinel
           tags: latest
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ env.DOCKER_HUB }}
           dockerfile: ./portal/Dockerfile
           directory: ./portal
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -69,7 +70,7 @@ jobs:
         with:
           image: yakup-jr/score-sentinel
           tags: latest
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ env.GITHUB_PACKAGES }}
           dockerfile: ./portal/Dockerfile
           directory: ./portal
           username: ${{ github.actor }}

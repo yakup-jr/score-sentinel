@@ -33,6 +33,7 @@ jobs:
           tags: latest
           registry: docker.io
           dockerfile: ./portal/Dockerfile
+          directory: ./portal
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 

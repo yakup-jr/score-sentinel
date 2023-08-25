@@ -5,10 +5,17 @@ on:
     branches:
       - master
       - dev
-      - SS-15-application-add-ci-cd
+    tags:
+      - v*
+  pull_requests:
+    branches:
+      - master
+      - dev
+      - hot-fix
+    tags:
+      - v*
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: score-sentinel
 jobs:
   build-and-run-tests:
 
@@ -52,7 +59,7 @@ jobs:
         with:
           image: whtoy/score-sentinel
           tags: latest
-          registry: docker.io
+          registry: ${{ env.REGISTRY }}
           dockerfile: ./portal/Dockerfile
           directory: ./portal
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -62,7 +69,7 @@ jobs:
         with:
           image: yakup-jr/score-sentinel
           tags: latest
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           dockerfile: ./portal/Dockerfile
           directory: ./portal
           username: ${{ github.actor }}

@@ -3,6 +3,7 @@ version: '3'
 services:
   app:
     build: ./portal
-    container_name: 'portal-app'
+    container_name: 'portal'
+    image: whtoy/score-sentinel
     ports:
       - "8080:8080"

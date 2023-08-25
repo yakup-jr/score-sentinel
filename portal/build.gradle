@@ -5,7 +5,7 @@ plugins {
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
-group = 'com.example'
+group = 'com.ss.portal'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -54,4 +54,12 @@ tasks.named('test') {
 tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
+}
+
+springBoot {
+	mainClass = 'com.ss.portal.PortalApplication'
+}
+
+bootJar {
+	mainClass = 'com.ss.portal.PortalApplication'
 }
